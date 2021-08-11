@@ -1,9 +1,9 @@
 import pyautogui as pygui
 import time
-import pyperclip as pyclip
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+import pandas as pd
 
 
 class Vivaldi:
@@ -24,37 +24,38 @@ class Vivaldi:
     def get_element_class(self, cl) -> None:
         search = self.driver.find_element_by_class_name(cl)
 
-        self.actions.move_to_element(search)
-        self.actions.double_click()
-        
-        self.actions.perform()
+        search.click()
+
+        time.sleep(10)
+        current_url = self.driver.current_url
+        self.driver.get(current_url)
+
+        search = self.driver.find_element_by_class_name(cl)
+        search.click()
+
+        time.sleep(10)
+        search = self.driver.find_element_by_class_name('a-b-rb-c')
+        search.click()
+
+        time.sleep(5)
+        pygui.press('enter')
+        time.sleep(5)
+
+    def quit(self):
+        self.driver.quit()
 
 
 vivaldi = Vivaldi()
 vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
+time.sleep(5)
 vivaldi.get_element_class('bSmy5')
+vivaldi.quit()
 
+time.sleep(10)
+df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
 
-
-# pygui.moveTo(x=72, y=229)
-
-# scr_width, scr_height = pygui.size()
-# cur_mousex, cur_mousey = pygui.position()
-
-
-# def open_site(url = 'https://www.google.com') -> None:
-#     pyclip.copy(url)
-#     pygui.hotkey('ctrl','t')
-#     pygui.hotkey('ctrl', 'v')
-#     pygui.press('enter')
-#     time.sleep(10)
-
-# def move_mouse():
-#     pygui.moveTo(scr_width/2,scr_height/2)
-
-# pygui.PAUSE = 1 # A cada execução, pausa 1 segundo
-
-# pygui.alert('O programa vai iniciar, clique em OK e não mexa em nada!')
-# open_app('vivaldi')
-# open_site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
-# move_mouse()
+faturamento = df['Valor Final'].sum()
+qtde_produtos = df['Quantidade'].sum()
+print(df)
+print(faturamento)
+print(qtde_produtos)
