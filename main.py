@@ -45,7 +45,6 @@ class Vivaldi:
         sleep(5)
 
     
-
     def quit(self):
         self.driver.quit()
 
@@ -85,22 +84,21 @@ class Firefox:
         self.driver.switch_to_default_content()
         self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/footer/button/span').click()
 
+    def quit(self):
+        self.driver.quit()
 
 
-# vivaldi = Vivaldi()
-# vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
-# sleep(5)
-# vivaldi.download_in_gdrive('bSmy5')
-# vivaldi.quit()
+vivaldi = Vivaldi()
+vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
+sleep(5)
+vivaldi.download_in_gdrive('bSmy5')
+vivaldi.quit()
 
-# sleep(10)
-# df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
+sleep(5)
+df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
 
-# faturamento = df['Valor Final'].sum()
-# qtde_produtos = df['Quantidade'].sum()
-# print(df)
-# print(faturamento)
-# print(qtde_produtos)
+faturamento = df['Valor Final'].sum()
+qtde_produtos = df['Quantidade'].sum()
 
 load_dotenv()
 
@@ -108,16 +106,18 @@ email = os.getenv('EMAIL')
 password = os.getenv('PASSWORD')
 
 destino = 'pietroricardocres@hotmail.com'
-assunto = 'DEMISSÃO'
-conteudo = """
-SEU OTARIO
-VOCE FOI DEMITIDO
-KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+assunto = 'Relatório de vendas de Ontem'
+conteudo = f"""
+Prezado, bom dia
 
-BY CHEFE
-"""
+O faturamento de ontem foi de: R${faturamento:,.2f}
+A quantidade de produtos foi de: {qtde_produtos:,}
+
+Abs
+Garrafa"""
 
 firefox = Firefox()
 firefox.site('https://protonmail.com')
 firefox.login(email=email, password=password)
 firefox.send_email(destino=destino, assunto=assunto, conteudo=conteudo)
+firefox.quit()
