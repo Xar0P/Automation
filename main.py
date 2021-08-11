@@ -33,10 +33,11 @@ class Vivaldi:
         current_url = self.driver.current_url
         self.driver.get(current_url)
 
+        sleep(3)
         search = self.driver.find_element_by_class_name(cl)
         search.click()
 
-        sleep(10)
+        sleep(5)
         search = self.driver.find_element_by_class_name('a-b-rb-c')
         search.click()
 
@@ -77,12 +78,13 @@ class Firefox:
         sleep(2)
 
         # MUDANDO PARA O IFRAME, PARA PEGAR O HTML DENTRO DELE
-        self.driver.switch_to_frame(self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/div/section/div/div/div[1]/div/iframe'))
+        self.driver.switch_to.frame(self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/div/section/div/div/div[1]/div/iframe'))
         self.driver.find_element_by_xpath('/html/body/div[1]').send_keys(conteudo)
         
         # RETORNANDO PARA O HTML PADRAO
-        self.driver.switch_to_default_content()
+        self.driver.switch_to.default_content()
         self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/footer/button/span').click()
+        sleep(2)
 
     def quit(self):
         self.driver.quit()
