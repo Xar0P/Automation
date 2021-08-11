@@ -1,8 +1,10 @@
 import pyautogui as pygui
-import time
+from time import sleep
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+import os
+from dotenv import load_dotenv
 import pandas as pd
 
 
@@ -21,41 +23,101 @@ class Vivaldi:
     def site(self, url) -> None:
         self.driver.get(url)
 
-    def get_element_class(self, cl) -> None:
+    def download_in_gdrive(self, cl) -> None:
+        """ Recebe classe do elemento html """
         search = self.driver.find_element_by_class_name(cl)
 
         search.click()
 
-        time.sleep(10)
+        sleep(10)
         current_url = self.driver.current_url
         self.driver.get(current_url)
 
         search = self.driver.find_element_by_class_name(cl)
         search.click()
 
-        time.sleep(10)
+        sleep(10)
         search = self.driver.find_element_by_class_name('a-b-rb-c')
         search.click()
 
-        time.sleep(5)
+        sleep(5)
         pygui.press('enter')
-        time.sleep(5)
+        sleep(5)
+
+    
 
     def quit(self):
         self.driver.quit()
 
+class Firefox:
+    def __init__(self) -> None:
+        self._open()
+        
+    def _open(self) -> None:
+        self.driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
-vivaldi = Vivaldi()
-vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
-time.sleep(5)
-vivaldi.get_element_class('bSmy5')
-vivaldi.quit()
+    def site(self, url) -> None:
+        self.driver.get(url)
 
-time.sleep(10)
-df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
+    def login(self, email, password):
+        """ FAZENDO LOGIN """
+        self.driver.find_element_by_xpath('//*[@id="bs-example-navbar-collapse-1"]/ul/li[8]/a').click()
+        sleep(5)
 
-faturamento = df['Valor Final'].sum()
-qtde_produtos = df['Quantidade'].sum()
-print(df)
-print(faturamento)
-print(qtde_produtos)
+        self.driver.find_element_by_xpath('//*[@id="username"]').send_keys(email)
+        self.driver.find_element_by_xpath('//*[@id="password"]').send_keys(password)
+        self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/main/div[2]/form/button').click()
+        sleep(10)
+
+    def send_email(self, destino, assunto, conteudo):
+        """ ENVIANDO EMAIL """
+        self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div[2]/div/div[1]/div[2]/button').click()
+        sleep(3)
+        self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/div/div/div/input').send_keys(destino)
+        self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/div/div/div[3]/input').send_keys(assunto)
+        sleep(2)
+
+        # MUDANDO PARA O IFRAME, PARA PEGAR O HTML DENTRO DELE
+        self.driver.switch_to_frame(self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/div/section/div/div/div[1]/div/iframe'))
+        self.driver.find_element_by_xpath('/html/body/div[1]').send_keys(conteudo)
+        
+        # RETORNANDO PARA O HTML PADRAO
+        self.driver.switch_to_default_content()
+        self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/footer/button/span').click()
+
+
+
+# vivaldi = Vivaldi()
+# vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
+# sleep(5)
+# vivaldi.download_in_gdrive('bSmy5')
+# vivaldi.quit()
+
+# sleep(10)
+# df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
+
+# faturamento = df['Valor Final'].sum()
+# qtde_produtos = df['Quantidade'].sum()
+# print(df)
+# print(faturamento)
+# print(qtde_produtos)
+
+load_dotenv()
+
+email = os.getenv('EMAIL')
+password = os.getenv('PASSWORD')
+
+destino = 'pietroricardocres@hotmail.com'
+assunto = 'DEMISSÃO'
+conteudo = """
+SEU OTARIO
+VOCE FOI DEMITIDO
+KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+
+BY CHEFE
+"""
+
+firefox = Firefox()
+firefox.site('https://protonmail.com')
+firefox.login(email=email, password=password)
+firefox.send_email(destino=destino, assunto=assunto, conteudo=conteudo)
