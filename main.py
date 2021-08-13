@@ -54,7 +54,9 @@ class Firefox:
         self._open()
         
     def _open(self) -> None:
+        os.environ['MOZ_HEADLESS'] = '1' # Ficar invisivel a janela
         self.driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
+    
 
     def site(self, url) -> None:
         self.driver.get(url)
@@ -67,7 +69,7 @@ class Firefox:
         self.driver.find_element_by_xpath('//*[@id="username"]').send_keys(email)
         self.driver.find_element_by_xpath('//*[@id="password"]').send_keys(password)
         self.driver.find_element_by_xpath('/html/body/div[1]/div[2]/div/div/main/div[2]/form/button').click()
-        sleep(10)
+        sleep(30)
 
     def send_email(self, destino, assunto, conteudo):
         """ ENVIANDO EMAIL """
@@ -84,23 +86,23 @@ class Firefox:
         # RETORNANDO PARA O HTML PADRAO
         self.driver.switch_to.default_content()
         self.driver.find_element_by_xpath('/html/body/div[1]/div[3]/div/div/div/footer/button/span').click()
-        sleep(2)
+        sleep(12)
 
     def quit(self):
         self.driver.quit()
 
 
-vivaldi = Vivaldi()
-vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
-sleep(5)
-vivaldi.download_in_gdrive('bSmy5')
-vivaldi.quit()
+# vivaldi = Vivaldi()
+# vivaldi.site('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
+# sleep(5)
+# vivaldi.download_in_gdrive('bSmy5')
+# vivaldi.quit()
 
-sleep(5)
-df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
+# sleep(5)
+# df = pd.read_excel(r'C:/Users/pietr/Downloads/Vendas - Dez.xlsx')
 
-faturamento = df['Valor Final'].sum()
-qtde_produtos = df['Quantidade'].sum()
+# faturamento = df['Valor Final'].sum()
+# qtde_produtos = df['Quantidade'].sum()
 
 load_dotenv()
 
@@ -112,8 +114,8 @@ assunto = 'Relatório de vendas de Ontem'
 conteudo = f"""
 Prezado, bom dia
 
-O faturamento de ontem foi de: R${faturamento:,.2f}
-A quantidade de produtos foi de: {qtde_produtos:,}
+O faturamento de ontem foi de: R$
+A quantidade de produtos foi de: 
 
 Abs
 Garrafa"""
