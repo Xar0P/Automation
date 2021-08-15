@@ -7,7 +7,7 @@ class DownloadGDrive:
 
         self.playwright = await async_playwright().start()
         # headless=False para ficar visivel
-        self.browser = await self.playwright.firefox.launch()
+        self.browser = await self.playwright.firefox.launch(headless=False)
         self.page = await self.browser.new_page(accept_downloads=True)
         await self.page.goto(url)
         print(await self.page.title())
@@ -16,7 +16,7 @@ class DownloadGDrive:
         """ Baixar arquivo """
 
         await self.page.dblclick(xpath)
-        sleep(3)
+        sleep(5)
 
         async def download():
             print('Baixando')
