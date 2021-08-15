@@ -7,10 +7,10 @@ def extract_zip():
             os.rename(file, "extract.zip")
 
     with zipfile.ZipFile('extract.zip') as file:
-        file.extractall('./Extracted')
+        file.extractall('lib/data/Extracted')
 
-    paste = os.listdir('./Extracted')[0]
-    os.rename(f'./Extracted/{paste}', './Extracted/Exported')
+    paste = os.listdir('lib/data/Extracted')[0]
+    os.rename(f'lib/data/Extracted/{paste}', 'lib/data/Extracted/Exported')
     os.remove('extract.zip')
 
 if __name__ == "__main__":

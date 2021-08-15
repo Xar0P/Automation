@@ -8,9 +8,14 @@ def analysis():
 
     dados = Dados()
 
-    for file in os.listdir('./Extracted/Exported/'):
-        if fr'./Extracted/Exported/{file}'.endswith('xlsx'):
-            df = pd.read_excel(fr'./Extracted/Exported/{file}')
+    paste_extracted = os.path.isdir('lib/data/Extracted')
+
+    if not paste_extracted:
+        os.mkdir('lib/data/Extracted')
+
+    for file in os.listdir('lib/data/Extracted/Exported/'):
+        if fr'lib/data/Extracted/Exported/{file}'.endswith('xlsx'):
+            df = pd.read_excel(fr'lib/data/Extracted/Exported/{file}')
         # elif fr'./Extracted/Exported/{file}'.endswith('')
 
         try:
@@ -21,7 +26,7 @@ def analysis():
         except Exception as e:
             print(e)
 
-    shutil.rmtree(r'./Extracted/Exported/')
+    shutil.rmtree(r'lib/data/Extracted/')
 
     return dados
 
