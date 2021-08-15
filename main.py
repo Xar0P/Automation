@@ -13,7 +13,12 @@ def main():
         await download.download('div[aria-label="Exportar"]')
         await download.exit()
 
-    asyncio.run(get_file())
+    try:
+        asyncio.run(get_file())
+    except Exception:
+        asyncio.run(get_file())
+    except Exception as e:
+        print(f'Erro: {e}')
 
     extract_zip()
 
@@ -37,7 +42,6 @@ def main():
 
     async def send_mail():
         auto = ProtonMail()
-
         await auto.start()
         await auto.login(email, password)
         await auto.send_mail(destino, assunto, conteudo)
