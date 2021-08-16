@@ -7,7 +7,7 @@ class ProtonMail:
         """ Iniciar o firefox """
 
         self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.firefox.launch(headless=False)
+        self.browser = await self.playwright.firefox.launch()
         self.page = await self.browser.new_page()
         await self.page.goto('https://protonmail.com')
         print(await self.page.title())

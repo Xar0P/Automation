@@ -18,14 +18,12 @@ def analysis():
             df = pd.read_excel(fr'lib/data/Extracted/Exported/{file}')
         # elif fr'./Extracted/Exported/{file}'.endswith('')
 
-        try:
-            faturamento = df['Valor Final'].sum()
-            dados.add_dado(faturamento)
-            qtde_produtos = df['Quantidade'].sum()
-            dados.add_dado(qtde_produtos)
-        except Exception as e:
-            print(e)
+        faturamento = df['Valor Final'].sum()
+        dados.add_dado(faturamento)
+        qtde_produtos = df['Quantidade'].sum()
+        dados.add_dado(qtde_produtos)
 
+    # Remover a pasta
     shutil.rmtree(r'lib/data/Extracted/')
 
     return dados

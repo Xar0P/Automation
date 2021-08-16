@@ -1,22 +1,18 @@
 from playwright.async_api import async_playwright
-from time import sleep
 
 class DownloadGDrive:
-    async def start(self, url):
+    async def start(self, url: str = 'Pagina do google drive onde está o arquivo'):
         """ Iniciar o firefox """
 
         self.playwright = await async_playwright().start()
         # headless=False para ficar visivel
-        self.browser = await self.playwright.firefox.launch(headless=False)
+        self.browser = await self.playwright.firefox.launch()
         self.page = await self.browser.new_page(accept_downloads=True)
         await self.page.goto(url)
         print(await self.page.title())
 
-    async def download(self, xpath: str = '#content'):
+    async def download(self):
         """ Baixar arquivo """
-
-        await self.page.dblclick(xpath)
-        sleep(5)
 
         async def download():
             print('Baixando')

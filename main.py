@@ -9,8 +9,8 @@ from lib.data.extract_file import extract_zip
 def main():
     async def get_file():
         download = DownloadGDrive()
-        await download.start('https://drive.google.com/drive/folders/149xknr9JvrlEnhNWO49zPcw0PW5icxga')
-        await download.download('div[aria-label="Exportar"]')
+        await download.start('https://drive.google.com/drive/folders/14oLE59U1RqyRqlBbKpsyymW-mitvbtoh')
+        await download.download()
         await download.exit()
 
     try:
@@ -25,10 +25,8 @@ def main():
     dados = analysis()
 
     load_dotenv()
-
     email = os.getenv('EMAIL')
     password = os.getenv('PASSWORD')
-
     destino = 'pietroricardocres@hotmail.com'
     assunto = 'Relatório de vendas de Ontem'
     conteudo = f"""
