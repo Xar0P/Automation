@@ -1,4 +1,5 @@
 from playwright.async_api import async_playwright
+import asyncio
 
 class DownloadGDrive:
     async def start(self, url: str = 'Pagina do google drive onde está o arquivo'):
@@ -28,3 +29,19 @@ class DownloadGDrive:
     async def exit(self):
         await self.browser.close()
         await self.playwright.stop()
+
+async def get_file(url):
+        download = DownloadGDrive()
+        await download.start(url)
+        await download.download()
+        await download.exit()
+
+def download(url):
+    try:
+        asyncio.run(get_file(url))
+    except Exception:
+        asyncio.run(get_file(url))
+    except Exception:
+        asyncio.run(get_file(url))
+    except Exception as e:
+        print(f'Erro: {e}')

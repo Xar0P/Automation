@@ -23,14 +23,14 @@ class ProtonMail:
         await self.page.click('//html/body/div[1]/div[2]/div/div/main/div[2]/form/button')
         print('Logado!')
 
-    async def send_mail(self, destino, assunto, conteudo):
+    async def send_mail(self, destiny, subject, content):
         """ Enviar email """
 
         await self.page.click('//html/body/div[1]/div[2]/div[2]/div/div[1]/div[2]/button')
         print('Inserindo Destino')
-        await self.page.fill('//html/body/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/div/div/div/input',destino)
+        await self.page.fill('//html/body/div[1]/div[3]/div/div/div/div/div/div[2]/div/div/div/div/div/input',destiny)
         print('Inserindo Assunto')
-        await self.page.fill('//html/body/div[1]/div[3]/div/div/div/div/div/div[3]/input', assunto)
+        await self.page.fill('//html/body/div[1]/div[3]/div/div/div/div/div/div[3]/input', subject)
 
         # Entrar no iframe
         iframe = await self.page.wait_for_selector(".squireIframe")
@@ -38,10 +38,10 @@ class ProtonMail:
         
         # Colocar conteudo dentro do iframe
         print('Inserindo Conteúdo')
-        await iframe.type('//html/body/div[1]', conteudo)
+        await iframe.type('//html/body/div[1]', content)
 
         # Clicar para enviar
-        await self.page.click('//html/body/div[1]/div[3]/div/div/div/footer/button/span')
+        await self.page.click('//html/body/div[1]/div[3]/div/div/div/footer/div[1]/button')
         sleep(4)
         print('Enviado!')
 
